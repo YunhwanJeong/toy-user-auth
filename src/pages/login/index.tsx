@@ -1,12 +1,12 @@
 import React from 'react';
-import LoginPageContainer from './LoginPageContainer';
+import LoginPageTemplate from './LoginPageTemplate';
 import LoginForm from './LoginForm';
 
 function LoginPage() {
     return (
-        <LoginPageContainer>
+        <LoginPageTemplate>
             <LoginForm />
-        </LoginPageContainer>
+        </LoginPageTemplate>
     );
 }
 
