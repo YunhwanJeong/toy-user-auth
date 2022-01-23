@@ -37,8 +37,16 @@ function LoginForm() {
         refetch();
     }
 
+    function isEmailInputEmpty() {
+        return emailState === '';
+    }
+
+    function isPasswordInputEmpty() {
+        return passwordState === '';
+    }
+
     function isUserEmailInputInvalid() {
-        return emailState !== '' && !isValidEmailFormat(emailState);
+        return !isEmailInputEmpty() && !isValidEmailFormat(emailState);
     }
 
     return (
@@ -70,6 +78,11 @@ function LoginForm() {
                 variant="contained"
                 type="submit"
                 size="large"
+                disabled={
+                    isEmailInputEmpty() ||
+                    isPasswordInputEmpty() ||
+                    isUserEmailInputInvalid()
+                }
                 sx={{ mt: 3 }}
             >
                 로그인
