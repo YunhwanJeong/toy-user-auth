@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Button, Link, TextField, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { isValidEmailFormat } from '../../utils/StringUtils';
+
+const INVALID_EMAIL_TEXT = '올바른 이메일 형식이 아닙니다';
 
 function LoginForm() {
     const [emailState, setEmailState] = useState('');
@@ -14,6 +17,10 @@ function LoginForm() {
         setPasswordState(e.target.value);
     }
 
+    function isUserEmailInputInvalid() {
+        return emailState !== '' && !isValidEmailFormat(emailState);
+    }
+
     return (
         <Box component="form" sx={{ mt: 1 }}>
             <TextField
@@ -23,6 +30,8 @@ function LoginForm() {
                 type="email"
                 name="email"
                 label="Email"
+                error={isUserEmailInputInvalid()}
+                helperText={isUserEmailInputInvalid() ? INVALID_EMAIL_TEXT : ''}
                 value={emailState}
                 onChange={updateEmailState}
             />
