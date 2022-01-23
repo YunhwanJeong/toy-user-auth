@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Button, Link, TextField, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Link,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { isValidEmailFormat } from '../../utils/StringUtils';
 import { QueryFunctionContext, useQuery } from 'react-query';
@@ -81,11 +88,12 @@ function LoginForm() {
                 disabled={
                     isEmailInputEmpty() ||
                     isPasswordInputEmpty() ||
-                    isUserEmailInputInvalid()
+                    isUserEmailInputInvalid() ||
+                    isLoading
                 }
                 sx={{ mt: 3 }}
             >
-                로그인
+                {isLoading ? <CircularProgress size={20} /> : '로그인'}
             </Button>
             <Box
                 sx={{
