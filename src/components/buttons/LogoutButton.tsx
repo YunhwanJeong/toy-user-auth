@@ -1,11 +1,10 @@
 import React from 'react';
-import TextButton from './TextButton';
 import useLogoutQuery from '../../hooks/queries/UseLogoutQuery';
 import { useLoginDispatch, useLoginState } from '../../context/LoginContext';
 import { useToastDispatch } from '../../context/ToastContext';
 import { AxiosError } from 'axios';
 import { AxiosErrorResponseData } from '../../utils/CustomAxios';
-import { CircularProgress } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 
 function LogoutButton() {
     const accessToken = useLoginState();
@@ -37,9 +36,9 @@ function LogoutButton() {
     }
 
     return (
-        <TextButton onClick={handleClick}>
+        <Button onClick={handleClick}>
             {isLoading ? <CircularProgress size={20} /> : '로그아웃'}
-        </TextButton>
+        </Button>
     );
 }
 

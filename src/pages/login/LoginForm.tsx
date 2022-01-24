@@ -8,6 +8,7 @@ import { useToastDispatch } from '../../context/ToastContext';
 import { AxiosErrorResponseData } from '../../utils/CustomAxios';
 import { LoginResponse } from '../../apis/Auth';
 import useLoginQuery from '../../hooks/queries/UseLoginQuery';
+import EmailInput from '../../components/Inputs/EmailInput';
 
 const INVALID_EMAIL_TEXT = '올바른 이메일 형식이 아닙니다';
 
@@ -39,10 +40,6 @@ function LoginForm() {
         }
     }
 
-    function updateEmailState(e: React.ChangeEvent<HTMLInputElement>) {
-        setEmailState(e.target.value);
-    }
-
     function updatePasswordState(e: React.ChangeEvent<HTMLInputElement>) {
         setPasswordState(e.target.value);
     }
@@ -52,32 +49,13 @@ function LoginForm() {
         refetch();
     }
 
-    function isEmailInputEmpty() {
-        return emailState === '';
-    }
-
-    function isPasswordInputEmpty() {
-        return passwordState === '';
-    }
-
     function isUserEmailInputInvalid() {
-        return !isEmailInputEmpty() && !isValidEmailFormat(emailState);
+        return !(emailState === '') && !isValidEmailFormat(emailState);
     }
 
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-                margin="normal"
-                fullWidth
-                required
-                type="email"
-                name="email"
-                label="Email"
-                error={isUserEmailInputInvalid()}
-                helperText={isUserEmailInputInvalid() ? INVALID_EMAIL_TEXT : ''}
-                value={emailState}
-                onChange={updateEmailState}
-            />
+            <EmailInput emailState={emailState} setEmailState={setEmailState} />
             <TextField
                 margin="normal"
                 fullWidth
@@ -94,8 +72,8 @@ function LoginForm() {
                 type="submit"
                 size="large"
                 disabled={
-                    isEmailInputEmpty() ||
-                    isPasswordInputEmpty() ||
+                    emailState === '' ||
+                    passwordState === '' ||
                     isUserEmailInputInvalid() ||
                     isLoading
                 }
