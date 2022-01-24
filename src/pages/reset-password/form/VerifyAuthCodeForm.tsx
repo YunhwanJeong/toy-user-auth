@@ -1,11 +1,46 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, CircularProgress, TextField } from '@mui/material';
 import { useResetPasswordStepDispatch } from '../../../context/ResetPasswordStepContext';
 import RemainAuthMillisecond from './RemainAuthMillisecond';
+import useVerifyAuthCodeQuery from '../../../hooks/queries/UseVerifyAuthCodeQuery';
+import { useVerifiedEmailState } from '../../../context/VerifiedEmailContext';
+import { useIssueTokenState } from '../../../context/IssueTokenContext';
+import { useToastDispatch } from '../../../context/ToastContext';
+import { VerifyAuthCodeResponse } from '../../../apis/ResetPassword';
+import { AxiosError } from 'axios';
+import { AxiosErrorResponseData } from '../../../utils/CustomAxios';
 
 function VerifyAuthCodeForm() {
     const [authCode, setAuthCode] = useState('');
     const resetPasswordStepDispatch = useResetPasswordStepDispatch();
+    const email = useVerifiedEmailState();
+    const issueToken = useIssueTokenState();
+    const toastDispatch = useToastDispatch();
+
+    const { isLoading, refetch } = useVerifyAuthCodeQuery(
+        { email, authCode, issueToken },
+        {
+            enabled: false,
+            onSuccess,
+            onError,
+        }
+    );
+
+    function onSuccess(data: VerifyAuthCodeResponse) {
+        resetPasswordStepDispatch(2);
+    }
+
+    function onError(error: AxiosError<AxiosErrorResponseData>) {
+        const message = error.response
+            ? error.response.data.error.message
+            : '알 수 없는 에러가 발생하였습니다';
+
+        toastDispatch({
+            type: 'OPEN',
+            severity: 'error',
+            message,
+        });
+    }
 
     function updateAuthCode(e: React.ChangeEvent<HTMLInputElement>) {
         setAuthCode(e.target.value);
@@ -15,11 +50,17 @@ function VerifyAuthCodeForm() {
         resetPasswordStepDispatch(0);
     }
 
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        refetch();
+    }
+
     return (
-        <Box component="form" sx={{ mt: 10 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 10 }}>
             <TextField
                 fullWidth
                 required
+                disabled={isLoading}
                 label="인증코드"
                 value={authCode}
                 onChange={updateAuthCode}
@@ -43,8 +84,13 @@ function VerifyAuthCodeForm() {
                 >
                     이전
                 </Button>
-                <Button fullWidth variant="contained" type="submit">
-                    다음
+                <Button
+                    fullWidth
+                    disabled={authCode === '' || isLoading}
+                    variant="contained"
+                    type="submit"
+                >
+                    {isLoading ? <CircularProgress size={20} /> : '다음'}
                 </Button>
             </Box>
         </Box>
