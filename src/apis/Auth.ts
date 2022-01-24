@@ -1,4 +1,4 @@
-import customAxios from '../utils/CustomAxios';
+import customAxios, { API_PREFIX } from '../utils/CustomAxios';
 import { AxiosResponse } from 'axios';
 
 export interface LoginData {
@@ -16,14 +16,14 @@ export interface LogoutResponse {
 
 async function login<T = LoginResponse>(loginData: LoginData): Promise<T> {
     const response: AxiosResponse<T> = await customAxios.post(
-        '/api/login',
+        `${API_PREFIX}/login`,
         loginData
     );
     return response.data;
 }
 
 async function logout(accessToken: string | null) {
-    const response = await customAxios.post('/api/logout', undefined, {
+    const response = await customAxios.post(`${API_PREFIX}/logout`, undefined, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },

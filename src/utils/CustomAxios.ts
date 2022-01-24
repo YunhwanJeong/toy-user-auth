@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+export const API_PREFIX = '/api';
+
 const DEFAULT_BASE_URL = 'https://ably-frontend-assignment-server.vercel.app';
 const DEFAULT_HEADERS = { 'Content-Type': 'application/json' };
 const UNKNOWN_ERROR_MESSAGE = '알 수 없는 에러가 발생하였습니다!!!';

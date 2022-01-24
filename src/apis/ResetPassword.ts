@@ -1,5 +1,7 @@
-import customAxios from '../utils/CustomAxios';
+import customAxios, { API_PREFIX } from '../utils/CustomAxios';
 import { AxiosResponse } from 'axios';
+
+const RESET_PASSWORD_API_ENDPOINT = '/reset-password';
 
 export interface VerifyEmailResponse {
     issueToken: string;
@@ -29,7 +31,7 @@ export interface ResetPasswordData {
 
 async function verifyEmail<T = VerifyEmailResponse>(email: string): Promise<T> {
     const response: AxiosResponse<T> = await customAxios.get(
-        '/api/reset-password',
+        `${API_PREFIX}${RESET_PASSWORD_API_ENDPOINT}`,
         { params: { email } }
     );
 
@@ -40,7 +42,7 @@ async function verifyAuthCode<T = VerifyAuthCodeResponse>(
     verifyAuthCodeData: VerifyAuthCodeData
 ): Promise<T> {
     const response: AxiosResponse<T> = await customAxios.post(
-        '/api/reset-password',
+        `${API_PREFIX}${RESET_PASSWORD_API_ENDPOINT}`,
         verifyAuthCodeData
     );
     return response.data;
@@ -50,7 +52,7 @@ async function reset<T = ResetPasswordResponse>(
     resetPasswordData: ResetPasswordData
 ): Promise<T> {
     const response: AxiosResponse<T> = await customAxios.patch(
-        '/api/reset-password',
+        `${API_PREFIX}${RESET_PASSWORD_API_ENDPOINT}`,
         resetPasswordData
     );
     return response.data;
