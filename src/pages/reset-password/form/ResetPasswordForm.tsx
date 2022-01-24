@@ -67,15 +67,13 @@ function ResetPasswordForm() {
     }
 
     function onError(error: AxiosError<AxiosErrorResponseData>) {
-        const message = error.response
-            ? error.response.data.error.message
-            : '알 수 없는 에러가 발생하였습니다!!!';
-
-        toastDispatch({
-            type: 'OPEN',
-            severity: 'error',
-            message,
-        });
+        if (error.response) {
+            toastDispatch({
+                type: 'OPEN',
+                severity: 'error',
+                message: error.response.data.error.message,
+            });
+        }
     }
 
     function updateNewPasswordState(e: React.ChangeEvent<HTMLInputElement>) {
