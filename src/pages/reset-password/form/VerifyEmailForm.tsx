@@ -10,12 +10,16 @@ import { useToastDispatch } from '../../../context/ToastContext';
 import { useVerifiedEmailDispatch } from '../../../context/VerifiedEmailContext';
 import { useResetPasswordStepDispatch } from '../../../context/ResetPasswordStepContext';
 import { useNavigate } from 'react-router-dom';
+import { useIssueTokenDispatch } from '../../../context/IssueTokenContext';
+import { useRemainAuthMillisecondDispatch } from '../../../context/RemainAuthMillisecondContext';
 
 function VerifyEmailForm() {
     const [emailState, setEmailState] = useState('');
     const toastDispatch = useToastDispatch();
     const verifiedEmailDispatch = useVerifiedEmailDispatch();
     const resetPasswordStepDispatch = useResetPasswordStepDispatch();
+    const issueTokenDispatch = useIssueTokenDispatch();
+    const remainAuthMillisecondDispatch = useRemainAuthMillisecondDispatch();
     const navigate = useNavigate();
     const { isLoading, refetch } = useVerifyEmailQuery(emailState, {
         enabled: false,
@@ -26,6 +30,8 @@ function VerifyEmailForm() {
     function onSuccess(data: VerifyEmailResponse) {
         verifiedEmailDispatch(emailState);
         resetPasswordStepDispatch(1);
+        issueTokenDispatch(data.issueToken);
+        remainAuthMillisecondDispatch(data.remainMillisecond);
     }
 
     function onError(error: AxiosError<AxiosErrorResponseData>) {

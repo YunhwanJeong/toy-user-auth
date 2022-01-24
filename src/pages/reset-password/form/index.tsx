@@ -3,15 +3,29 @@ import { useResetPasswordStepState } from '../../../context/ResetPasswordStepCon
 import VerifyEmailForm from './VerifyEmailForm';
 import VerifyAuthCodeForm from './VerifyAuthCodeForm';
 import ResetPasswordForm from './ResetPasswordForm';
+import IssueTokenContextProvider from '../../../context/IssueTokenContext';
+import RemainAuthMillisecondContextProvider from '../../../context/RemainAuthMillisecondContext';
 
 function ResetPasswordFormRenderer() {
     const step = useResetPasswordStepState();
     const form = () => {
         switch (step) {
             case 0:
-                return <VerifyEmailForm />;
+                return (
+                    <RemainAuthMillisecondContextProvider>
+                        <IssueTokenContextProvider>
+                            <VerifyEmailForm />
+                        </IssueTokenContextProvider>
+                    </RemainAuthMillisecondContextProvider>
+                );
             case 1:
-                return <VerifyAuthCodeForm />;
+                return (
+                    <RemainAuthMillisecondContextProvider>
+                        <IssueTokenContextProvider>
+                            <VerifyAuthCodeForm />
+                        </IssueTokenContextProvider>
+                    </RemainAuthMillisecondContextProvider>
+                );
             case 2:
                 return <ResetPasswordForm />;
             default:
