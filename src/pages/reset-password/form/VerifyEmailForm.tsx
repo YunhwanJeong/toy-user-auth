@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { Box, Button, CircularProgress } from '@mui/material';
-import EmailInput from '../../components/Inputs/EmailInput';
-import { isValidEmailFormat } from '../../utils/StringUtils';
-import useVerifyEmailQuery from '../../hooks/queries/UseVerifyEmailQuery';
-import { VerifyEmailResponse } from '../../apis/ResetPassword';
+import EmailInput from '../../../components/Inputs/EmailInput';
+import { isValidEmailFormat } from '../../../utils/StringUtils';
+import useVerifyEmailQuery from '../../../hooks/queries/UseVerifyEmailQuery';
+import { VerifyEmailResponse } from '../../../apis/ResetPassword';
 import { AxiosError } from 'axios';
-import { AxiosErrorResponseData } from '../../utils/CustomAxios';
-import { useToastDispatch } from '../../context/ToastContext';
-import { useVerifiedEmailDispatch } from '../../context/VerifiedEmailContext';
+import { AxiosErrorResponseData } from '../../../utils/CustomAxios';
+import { useToastDispatch } from '../../../context/ToastContext';
+import { useVerifiedEmailDispatch } from '../../../context/VerifiedEmailContext';
+import { useResetPasswordStepDispatch } from '../../../context/ResetPasswordStepContext';
 
 function VerifyEmailForm() {
     const [emailState, setEmailState] = useState('');
     const toastDispatch = useToastDispatch();
     const verifiedEmailDispatch = useVerifiedEmailDispatch();
+    const resetPasswordStepDispatch = useResetPasswordStepDispatch();
     const { isLoading, refetch } = useVerifyEmailQuery(emailState, {
         enabled: false,
         onSuccess,
@@ -21,6 +23,7 @@ function VerifyEmailForm() {
 
     function onSuccess(data: VerifyEmailResponse) {
         verifiedEmailDispatch(emailState);
+        resetPasswordStepDispatch(1);
     }
 
     function onError(error: AxiosError<AxiosErrorResponseData>) {

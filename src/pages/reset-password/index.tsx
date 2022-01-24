@@ -1,16 +1,19 @@
 import React from 'react';
 import ResetPasswordPageTemplate from './ResetPasswordPageTemplate';
 import ResetPasswordStepper from './ResetPasswordStepper';
-import VerifyEmailForm from './VerifyEmailForm';
 import VerifiedEmailContextProvider from '../../context/VerifiedEmailContext';
+import ResetPasswordStepContextProvider from '../../context/ResetPasswordStepContext';
+import ResetPasswordFormRenderer from './form';
 
 function ResetPasswordPage() {
     return (
         <ResetPasswordPageTemplate>
-            <ResetPasswordStepper />
-            <VerifiedEmailContextProvider>
-                <VerifyEmailForm />
-            </VerifiedEmailContextProvider>
+            <ResetPasswordStepContextProvider>
+                <ResetPasswordStepper />
+                <VerifiedEmailContextProvider>
+                    <ResetPasswordFormRenderer />
+                </VerifiedEmailContextProvider>
+            </ResetPasswordStepContextProvider>
         </ResetPasswordPageTemplate>
     );
 }
