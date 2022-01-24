@@ -13,6 +13,7 @@ import { AxiosError } from 'axios';
 import { AxiosErrorResponseData } from '../../utils/CustomAxios';
 import { useToastDispatch } from '../../context/ToastContext';
 import useGetUserQuery from '../../hooks/queries/UseGetUserQuery';
+import LogoutButton from '../../components/buttons/LogoutButton';
 
 function UserInformationCard() {
     const accessToken = useLoginState();
@@ -38,30 +39,43 @@ function UserInformationCard() {
             raised
             sx={{
                 backgroundColor: grey[50],
+                padding: 2,
             }}
         >
-            <Box sx={{ display: 'flex', alignItems: 'center', padding: 2 }}>
-                {isLoading || !data ? (
-                    <>
-                        <Skeleton
-                            variant="circular"
-                            sx={{
-                                width: 80,
-                                height: 80,
-                                mr: 4,
-                            }}
-                        />
-                        <CardContent
-                            sx={{
-                                flexGrow: '1',
-                            }}
-                        >
-                            <Skeleton variant="text" width={'50%'} />
-                            <Skeleton variant="text" width={'80%'} />
-                        </CardContent>
-                    </>
-                ) : (
-                    <>
+            {isLoading || !data ? (
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: 1,
+                    }}
+                >
+                    <Skeleton
+                        variant="circular"
+                        sx={{
+                            width: 80,
+                            height: 80,
+                            mr: 4,
+                        }}
+                    />
+                    <CardContent
+                        sx={{
+                            flexGrow: '1',
+                        }}
+                    >
+                        <Skeleton variant="text" width={'50%'} />
+                        <Skeleton variant="text" width={'80%'} />
+                    </CardContent>
+                </Box>
+            ) : (
+                <>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: 1,
+                        }}
+                    >
                         <Avatar
                             src={data.profileImage}
                             alt="profile avatar image"
@@ -79,9 +93,12 @@ function UserInformationCard() {
                                 {data.email}
                             </Typography>
                         </CardContent>
-                    </>
-                )}
-            </Box>
+                    </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <LogoutButton />
+                    </Box>
+                </>
+            )}
         </Card>
     );
 }
