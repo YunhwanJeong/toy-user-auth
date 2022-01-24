@@ -16,6 +16,7 @@ import { VerifyAuthCodeResponse } from '../../../apis/ResetPassword';
 import { AxiosError } from 'axios';
 import { AxiosErrorResponseData } from '../../../utils/CustomAxios';
 import { useRemainAuthMillisecondDispatch } from '../../../context/RemainAuthMillisecondContext';
+import { useConfirmTokenDispatch } from '../../../context/ConfirmTokenContext';
 
 function VerifyAuthCodeForm() {
     const [authCode, setAuthCode] = useState('');
@@ -26,6 +27,7 @@ function VerifyAuthCodeForm() {
     const issueTokenDispatch = useIssueTokenDispatch();
     const remainAuthMillisecondDispatch = useRemainAuthMillisecondDispatch();
     const toastDispatch = useToastDispatch();
+    const confirmTokenDispatch = useConfirmTokenDispatch();
 
     const { isLoading, refetch } = useVerifyAuthCodeQuery(
         { email: verifiedEmailState, authCode, issueToken: issueTokenState },
@@ -38,6 +40,7 @@ function VerifyAuthCodeForm() {
 
     function onSuccess(data: VerifyAuthCodeResponse) {
         resetPasswordStepDispatch(2);
+        confirmTokenDispatch(data.confirmToken);
     }
 
     function onError(error: AxiosError<AxiosErrorResponseData>) {
