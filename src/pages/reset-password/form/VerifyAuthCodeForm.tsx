@@ -3,22 +3,32 @@ import { Box, Button, CircularProgress, TextField } from '@mui/material';
 import { useResetPasswordStepDispatch } from '../../../context/ResetPasswordStepContext';
 import RemainAuthMillisecond from './RemainAuthMillisecond';
 import useVerifyAuthCodeQuery from '../../../hooks/queries/UseVerifyAuthCodeQuery';
-import { useVerifiedEmailState } from '../../../context/VerifiedEmailContext';
-import { useIssueTokenState } from '../../../context/IssueTokenContext';
+import {
+    useVerifiedEmailDispatch,
+    useVerifiedEmailState,
+} from '../../../context/VerifiedEmailContext';
+import {
+    useIssueTokenDispatch,
+    useIssueTokenState,
+} from '../../../context/IssueTokenContext';
 import { useToastDispatch } from '../../../context/ToastContext';
 import { VerifyAuthCodeResponse } from '../../../apis/ResetPassword';
 import { AxiosError } from 'axios';
 import { AxiosErrorResponseData } from '../../../utils/CustomAxios';
+import { useRemainAuthMillisecondDispatch } from '../../../context/RemainAuthMillisecondContext';
 
 function VerifyAuthCodeForm() {
     const [authCode, setAuthCode] = useState('');
     const resetPasswordStepDispatch = useResetPasswordStepDispatch();
-    const email = useVerifiedEmailState();
-    const issueToken = useIssueTokenState();
+    const verifiedEmailState = useVerifiedEmailState();
+    const verifiedEmailDispatch = useVerifiedEmailDispatch();
+    const issueTokenState = useIssueTokenState();
+    const issueTokenDispatch = useIssueTokenDispatch();
+    const remainAuthMillisecondDispatch = useRemainAuthMillisecondDispatch();
     const toastDispatch = useToastDispatch();
 
     const { isLoading, refetch } = useVerifyAuthCodeQuery(
-        { email, authCode, issueToken },
+        { email: verifiedEmailState, authCode, issueToken: issueTokenState },
         {
             enabled: false,
             onSuccess,
@@ -47,7 +57,10 @@ function VerifyAuthCodeForm() {
     }
 
     function goBackToPreviousStep(e: React.MouseEvent<HTMLButtonElement>) {
+        verifiedEmailDispatch('');
         resetPasswordStepDispatch(0);
+        issueTokenDispatch('');
+        remainAuthMillisecondDispatch(0);
     }
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
