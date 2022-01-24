@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import LoginPage from '../pages/login';
 import { useLoginState } from '../context/LoginContext';
 import UserPage from '../pages/user';
+import ResetPasswordPage from '../pages/reset-password';
 
 function Router() {
     const isLoggedIn = !!useLoginState();
@@ -20,6 +21,10 @@ function Router() {
                 ) : (
                     <>
                         <Route path="/login" element={<LoginPage />} />
+                        <Route
+                            path="/reset-password"
+                            element={<ResetPasswordPage />}
+                        />
                         <Route
                             path="*"
                             element={<Navigate replace to="login" />}
