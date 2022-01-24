@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 
+const PASSWORD_NOT_MATCH_TEXT = '비밀번호가 일치하지 않습니다';
+
 function ResetPasswordForm() {
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
@@ -38,6 +40,18 @@ function ResetPasswordForm() {
                 placeholder="비밀번호 확인"
                 value={newPasswordConfirm}
                 onChange={updateNewPasswordConfirmState}
+                error={
+                    newPassword !== '' &&
+                    newPasswordConfirm !== '' &&
+                    newPassword !== newPasswordConfirm
+                }
+                helperText={
+                    newPassword !== '' &&
+                    newPasswordConfirm !== '' &&
+                    newPassword !== newPasswordConfirm
+                        ? PASSWORD_NOT_MATCH_TEXT
+                        : ''
+                }
             />
             <Box
                 sx={{
@@ -50,7 +64,16 @@ function ResetPasswordForm() {
                 <Button fullWidth size="large" variant="outlined">
                     처음으로
                 </Button>
-                <Button fullWidth variant="contained" type="submit">
+                <Button
+                    fullWidth
+                    disabled={
+                        newPassword === '' ||
+                        newPasswordConfirm === '' ||
+                        newPassword !== newPasswordConfirm
+                    }
+                    variant="contained"
+                    type="submit"
+                >
                     비밀번호 변경하기
                 </Button>
             </Box>
