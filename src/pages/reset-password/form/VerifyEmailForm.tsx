@@ -9,12 +9,14 @@ import { AxiosErrorResponseData } from '../../../utils/CustomAxios';
 import { useToastDispatch } from '../../../context/ToastContext';
 import { useVerifiedEmailDispatch } from '../../../context/VerifiedEmailContext';
 import { useResetPasswordStepDispatch } from '../../../context/ResetPasswordStepContext';
+import { useNavigate } from 'react-router-dom';
 
 function VerifyEmailForm() {
     const [emailState, setEmailState] = useState('');
     const toastDispatch = useToastDispatch();
     const verifiedEmailDispatch = useVerifiedEmailDispatch();
     const resetPasswordStepDispatch = useResetPasswordStepDispatch();
+    const navigate = useNavigate();
     const { isLoading, refetch } = useVerifyEmailQuery(emailState, {
         enabled: false,
         onSuccess,
@@ -56,7 +58,12 @@ function VerifyEmailForm() {
                     gap: 1,
                 }}
             >
-                <Button fullWidth size="large" variant="outlined">
+                <Button
+                    fullWidth
+                    onClick={() => navigate(-1)}
+                    size="large"
+                    variant="outlined"
+                >
                     이전
                 </Button>
                 <Button
