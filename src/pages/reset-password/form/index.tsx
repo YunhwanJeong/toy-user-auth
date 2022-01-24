@@ -12,36 +12,26 @@ function ResetPasswordFormRenderer() {
     const form = () => {
         switch (step) {
             case 0:
-                return (
-                    <RemainAuthMillisecondContextProvider>
-                        <IssueTokenContextProvider>
-                            <VerifyEmailForm />
-                        </IssueTokenContextProvider>
-                    </RemainAuthMillisecondContextProvider>
-                );
+                return <VerifyEmailForm />;
             case 1:
-                return (
-                    <RemainAuthMillisecondContextProvider>
-                        <IssueTokenContextProvider>
-                            <ConfirmTokenContextProvider>
-                                <VerifyAuthCodeForm />
-                            </ConfirmTokenContextProvider>
-                        </IssueTokenContextProvider>
-                    </RemainAuthMillisecondContextProvider>
-                );
+                return <VerifyAuthCodeForm />;
             case 2:
-                return (
-                    <ConfirmTokenContextProvider>
-                        <ResetPasswordForm />
-                    </ConfirmTokenContextProvider>
-                );
+                return <ResetPasswordForm />;
             default:
                 throw new Error(
                     `Unknown step(${step}) of reset password has been set`
                 );
         }
     };
-    return form();
+    return (
+        <IssueTokenContextProvider>
+            <RemainAuthMillisecondContextProvider>
+                <ConfirmTokenContextProvider>
+                    {form()}
+                </ConfirmTokenContextProvider>
+            </RemainAuthMillisecondContextProvider>
+        </IssueTokenContextProvider>
+    );
 }
 
 export default ResetPasswordFormRenderer;
