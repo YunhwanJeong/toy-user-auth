@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button } from '@mui/material';
 import EmailInput from '../../components/Inputs/EmailInput';
+import { isValidEmailFormat } from '../../utils/StringUtils';
 
 function VerifyEmailForm() {
     const [emailState, setEmailState] = useState('');
@@ -19,7 +20,13 @@ function VerifyEmailForm() {
                 <Button fullWidth size="large" variant="outlined">
                     이전
                 </Button>
-                <Button fullWidth disabled variant="contained">
+                <Button
+                    fullWidth
+                    disabled={
+                        emailState === '' || !isValidEmailFormat(emailState)
+                    }
+                    variant="contained"
+                >
                     다음
                 </Button>
             </Box>
