@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryOptions } from 'react-query';
 import { Auth } from '../../apis';
 import { LoginData, LoginResponse } from '../../apis/Auth';
 import { AxiosError } from 'axios';
@@ -8,20 +8,18 @@ async function getAccessToken(email: string, password: string) {
     return Auth.login({ email, password });
 }
 
-function useLogin(
+function useLoginQuery(
     loginData: LoginData,
-    onSuccess: (data: LoginResponse) => void,
-    onError: (error: AxiosError<AxiosErrorResponseData>) => void
+    options: Omit<
+        UseQueryOptions<LoginResponse, AxiosError<AxiosErrorResponseData>>,
+        'queryKey' | 'queryFn'
+    >
 ) {
     return useQuery(
         'login',
         () => getAccessToken(loginData.email, loginData.password),
-        {
-            enabled: false,
-            onSuccess,
-            onError,
-        }
+        options
     );
 }
 
-export default useLogin;
+export default useLoginQuery;

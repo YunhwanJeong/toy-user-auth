@@ -7,7 +7,7 @@ import { AxiosError } from 'axios';
 import { useToastDispatch } from '../../context/ToastContext';
 import { AxiosErrorResponseData } from '../../utils/CustomAxios';
 import { LoginResponse } from '../../apis/Auth';
-import useLogin from '../../hooks/queries/UseLogin';
+import useLoginQuery from '../../hooks/queries/UseLoginQuery';
 
 const INVALID_EMAIL_TEXT = '올바른 이메일 형식이 아닙니다';
 
@@ -16,10 +16,13 @@ function LoginForm() {
     const [passwordState, setPasswordState] = useState('');
     const loginDispatch = useLoginDispatch();
     const toastDispatch = useToastDispatch();
-    const { isLoading, refetch } = useLogin(
+    const { isLoading, refetch } = useLoginQuery(
         { email: emailState, password: passwordState },
-        onSuccess,
-        onError
+        {
+            enabled: false,
+            onSuccess,
+            onError,
+        }
     );
 
     function onSuccess(data: LoginResponse) {
