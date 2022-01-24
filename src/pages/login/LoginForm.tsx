@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
-import {
-    Box,
-    Button,
-    CircularProgress,
-    Link,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Box, Button, CircularProgress, Link, TextField } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { isValidEmailFormat } from '../../utils/StringUtils';
-import { QueryFunctionContext, useQuery } from 'react-query';
-import {} from '../../apis/Auth';
-import { Auth } from '../../apis';
 import { useLoginDispatch } from '../../context/LoginContext';
+import { AxiosError } from 'axios';
+import { useToastDispatch } from '../../context/ToastContext';
+import { AxiosErrorResponseData } from '../../utils/CustomAxios';
+import { LoginResponse } from '../../apis/Auth';
+import useLogin from '../../hooks/queries/UseLogin';
 
 const INVALID_EMAIL_TEXT = '올바른 이메일 형식이 아닙니다';
 
@@ -20,12 +15,26 @@ function LoginForm() {
     const [emailState, setEmailState] = useState('');
     const [passwordState, setPasswordState] = useState('');
     const loginDispatch = useLoginDispatch();
-    const { isLoading, refetch } = useQuery('login', loginQueryFn, {
-        enabled: false,
-        onSuccess: (data) => {
-            loginDispatch(data.accessToken);
-        },
-    });
+    const toastDispatch = useToastDispatch();
+    const { isLoading, refetch } = useLogin(
+        { email: emailState, password: passwordState },
+        onSuccess,
+        onError
+    );
+
+    function onSuccess(data: LoginResponse) {
+        loginDispatch(data.accessToken);
+    }
+
+    function onError(error: AxiosError<AxiosErrorResponseData>) {
+        if (error.response) {
+            toastDispatch({
+                type: 'OPEN',
+                severity: 'error',
+                message: error.response.data.error.message,
+            });
+        }
+    }
 
     function updateEmailState(e: React.ChangeEvent<HTMLInputElement>) {
         setEmailState(e.target.value);
@@ -33,10 +42,6 @@ function LoginForm() {
 
     function updatePasswordState(e: React.ChangeEvent<HTMLInputElement>) {
         setPasswordState(e.target.value);
-    }
-
-    async function loginQueryFn(context: QueryFunctionContext) {
-        return Auth.login({ email: emailState, password: passwordState });
     }
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

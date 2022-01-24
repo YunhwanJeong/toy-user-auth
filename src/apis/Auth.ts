@@ -1,12 +1,12 @@
 import customAxios from '../utils/CustomAxios';
 import { AxiosResponse } from 'axios';
 
-interface LoginData {
+export interface LoginData {
     email: string;
     password: string;
 }
 
-interface LoginResponse {
+export interface LoginResponse {
     accessToken: string;
 }
 

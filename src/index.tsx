@@ -5,6 +5,9 @@ import { CssBaseline } from '@mui/material';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import LoginContextProvider from './context/LoginContext';
+import Toast from './modals/components/Toast';
+import ToastContextProvider from './context/ToastContext';
+import ModalPortal from './modals/portal/ModalPortal';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -19,7 +22,12 @@ ReactDOM.render(
         <QueryClientProvider client={queryClient}>
             <CssBaseline />
             <LoginContextProvider>
-                <Router />
+                <ToastContextProvider>
+                    <ModalPortal>
+                        <Toast />
+                    </ModalPortal>
+                    <Router />
+                </ToastContextProvider>
             </LoginContextProvider>
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
