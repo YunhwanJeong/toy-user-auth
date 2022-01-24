@@ -51,7 +51,11 @@ function LoginForm() {
 
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <EmailInput emailState={emailState} setEmailState={setEmailState} />
+            <EmailInput
+                emailState={emailState}
+                setEmailState={setEmailState}
+                disabled={isLoading}
+            />
             <TextField
                 margin="normal"
                 fullWidth

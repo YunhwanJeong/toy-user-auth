@@ -7,9 +7,10 @@ const INVALID_EMAIL_TEXT = '올바른 이메일 형식이 아닙니다';
 interface EmailInputProps {
     emailState: string;
     setEmailState: React.Dispatch<React.SetStateAction<string>>;
+    disabled: boolean;
 }
 
-function EmailInput({ emailState, setEmailState }: EmailInputProps) {
+function EmailInput({ emailState, setEmailState, disabled }: EmailInputProps) {
     function isUserEmailInputInvalid() {
         return !(emailState === '') && !isValidEmailFormat(emailState);
     }
@@ -23,6 +24,7 @@ function EmailInput({ emailState, setEmailState }: EmailInputProps) {
             margin="normal"
             fullWidth
             required
+            disabled={disabled}
             type="email"
             name="email"
             label="Email"

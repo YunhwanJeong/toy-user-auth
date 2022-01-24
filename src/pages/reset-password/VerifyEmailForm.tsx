@@ -7,17 +7,21 @@ import { VerifyEmailResponse } from '../../apis/ResetPassword';
 import { AxiosError } from 'axios';
 import { AxiosErrorResponseData } from '../../utils/CustomAxios';
 import { useToastDispatch } from '../../context/ToastContext';
+import { useVerifiedEmailDispatch } from '../../context/VerifiedEmailContext';
 
 function VerifyEmailForm() {
     const [emailState, setEmailState] = useState('');
     const toastDispatch = useToastDispatch();
+    const verifiedEmailDispatch = useVerifiedEmailDispatch();
     const { isLoading, refetch } = useVerifyEmailQuery(emailState, {
         enabled: false,
         onSuccess,
         onError,
     });
 
-    function onSuccess(data: VerifyEmailResponse) {}
+    function onSuccess(data: VerifyEmailResponse) {
+        verifiedEmailDispatch(emailState);
+    }
 
     function onError(error: AxiosError<AxiosErrorResponseData>) {
         if (error.response) {
@@ -36,7 +40,11 @@ function VerifyEmailForm() {
 
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 10 }}>
-            <EmailInput emailState={emailState} setEmailState={setEmailState} />
+            <EmailInput
+                emailState={emailState}
+                setEmailState={setEmailState}
+                disabled={isLoading}
+            />
             <Box
                 sx={{
                     mt: 5,
