@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { Box, Button, CircularProgress, TextField } from '@mui/material';
-import { useResetPasswordStepDispatch } from '../../../context/ResetPasswordStepContext';
+import { useResetPasswordStepDispatch } from '../../../context/reset-password/ResetPasswordStepContext';
 import RemainAuthMillisecond from './RemainAuthMillisecond';
 import useVerifyAuthCodeQuery from '../../../hooks/queries/UseVerifyAuthCodeQuery';
 import {
     useVerifiedEmailDispatch,
     useVerifiedEmailState,
-} from '../../../context/VerifiedEmailContext';
+} from '../../../context/reset-password/VerifiedEmailContext';
 import {
     useIssueTokenDispatch,
     useIssueTokenState,
-} from '../../../context/IssueTokenContext';
-import { useToastDispatch } from '../../../context/ToastContext';
+} from '../../../context/reset-password/form/IssueTokenContext';
+import { useToastDispatch } from '../../../context/global/ToastContext';
 import { VerifyAuthCodeResponse } from '../../../apis/ResetPassword';
 import { AxiosError } from 'axios';
 import { AxiosErrorResponseData } from '../../../utils/CustomAxios';
-import { useRemainAuthMillisecondDispatch } from '../../../context/RemainAuthMillisecondContext';
-import { useConfirmTokenDispatch } from '../../../context/ConfirmTokenContext';
+import { useRemainAuthMillisecondDispatch } from '../../../context/reset-password/form/RemainAuthMillisecondContext';
+import { useConfirmTokenDispatch } from '../../../context/reset-password/form/ConfirmTokenContext';
 
 function VerifyAuthCodeForm() {
     const [authCode, setAuthCode] = useState('');

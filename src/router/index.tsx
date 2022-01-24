@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import LoginPage from '../pages/login';
-import { useLoginState } from '../context/LoginContext';
+import { useLoginState } from '../context/global/LoginContext';
 import UserPage from '../pages/user';
 import ResetPasswordPage from '../pages/reset-password';
 

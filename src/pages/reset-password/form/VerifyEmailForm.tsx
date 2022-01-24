@@ -6,12 +6,12 @@ import useVerifyEmailQuery from '../../../hooks/queries/UseVerifyEmailQuery';
 import { VerifyEmailResponse } from '../../../apis/ResetPassword';
 import { AxiosError } from 'axios';
 import { AxiosErrorResponseData } from '../../../utils/CustomAxios';
-import { useToastDispatch } from '../../../context/ToastContext';
-import { useVerifiedEmailDispatch } from '../../../context/VerifiedEmailContext';
-import { useResetPasswordStepDispatch } from '../../../context/ResetPasswordStepContext';
+import { useToastDispatch } from '../../../context/global/ToastContext';
+import { useVerifiedEmailDispatch } from '../../../context/reset-password/VerifiedEmailContext';
+import { useResetPasswordStepDispatch } from '../../../context/reset-password/ResetPasswordStepContext';
 import { useNavigate } from 'react-router-dom';
-import { useIssueTokenDispatch } from '../../../context/IssueTokenContext';
-import { useRemainAuthMillisecondDispatch } from '../../../context/RemainAuthMillisecondContext';
+import { useIssueTokenDispatch } from '../../../context/reset-password/form/IssueTokenContext';
+import { useRemainAuthMillisecondDispatch } from '../../../context/reset-password/form/RemainAuthMillisecondContext';
 
 function VerifyEmailForm() {
     const [emailState, setEmailState] = useState('');

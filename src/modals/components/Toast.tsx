@@ -1,6 +1,9 @@
 import React from 'react';
 import { Alert, Snackbar } from '@mui/material';
-import { useToastDispatch, useToastState } from '../../context/ToastContext';
+import {
+    useToastDispatch,
+    useToastState,
+} from '../../context/global/ToastContext';
 
 const DEFAULT_ERROR_MESSAGE = '알 수 없는 오류가 발생했습니다';
 

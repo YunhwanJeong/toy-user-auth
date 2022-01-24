@@ -8,10 +8,13 @@ import {
     Typography,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import { useLoginDispatch, useLoginState } from '../../context/LoginContext';
+import {
+    useLoginDispatch,
+    useLoginState,
+} from '../../context/global/LoginContext';
 import { AxiosError } from 'axios';
 import { AxiosErrorResponseData } from '../../utils/CustomAxios';
-import { useToastDispatch } from '../../context/ToastContext';
+import { useToastDispatch } from '../../context/global/ToastContext';
 import useGetUserQuery from '../../hooks/queries/UseGetUserQuery';
 import LogoutButton from '../../components/buttons/LogoutButton';
 

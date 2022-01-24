@@ -4,19 +4,19 @@ import useResetPasswordMutation from '../../../hooks/mutations/UseResetPasswordM
 import {
     useVerifiedEmailDispatch,
     useVerifiedEmailState,
-} from '../../../context/VerifiedEmailContext';
+} from '../../../context/reset-password/VerifiedEmailContext';
 import {
     useConfirmTokenDispatch,
     useConfirmTokenState,
-} from '../../../context/ConfirmTokenContext';
+} from '../../../context/reset-password/form/ConfirmTokenContext';
 import { ResetPasswordResponse } from '../../../apis/ResetPassword';
 import { AxiosError } from 'axios';
 import { AxiosErrorResponseData } from '../../../utils/CustomAxios';
-import { useToastDispatch } from '../../../context/ToastContext';
+import { useToastDispatch } from '../../../context/global/ToastContext';
 import { useNavigate } from 'react-router-dom';
-import { useResetPasswordStepDispatch } from '../../../context/ResetPasswordStepContext';
-import { useIssueTokenDispatch } from '../../../context/IssueTokenContext';
-import { useRemainAuthMillisecondDispatch } from '../../../context/RemainAuthMillisecondContext';
+import { useResetPasswordStepDispatch } from '../../../context/reset-password/ResetPasswordStepContext';
+import { useIssueTokenDispatch } from '../../../context/reset-password/form/IssueTokenContext';
+import { useRemainAuthMillisecondDispatch } from '../../../context/reset-password/form/RemainAuthMillisecondContext';
 
 const PASSWORD_NOT_MATCH_TEXT = '비밀번호가 일치하지 않습니다';
 

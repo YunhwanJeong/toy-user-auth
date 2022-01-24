@@ -1,7 +1,10 @@
 import React from 'react';
 import useLogoutQuery from '../../hooks/queries/UseLogoutQuery';
-import { useLoginDispatch, useLoginState } from '../../context/LoginContext';
-import { useToastDispatch } from '../../context/ToastContext';
+import {
+    useLoginDispatch,
+    useLoginState,
+} from '../../context/global/LoginContext';
+import { useToastDispatch } from '../../context/global/ToastContext';
 import { AxiosError } from 'axios';
 import { AxiosErrorResponseData } from '../../utils/CustomAxios';
 import { Button, CircularProgress } from '@mui/material';
