@@ -1,11 +1,82 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, CircularProgress, TextField } from '@mui/material';
+import useResetPasswordMutation from '../../../hooks/mutations/UseResetPasswordMutation';
+import {
+    useVerifiedEmailDispatch,
+    useVerifiedEmailState,
+} from '../../../context/VerifiedEmailContext';
+import {
+    useConfirmTokenDispatch,
+    useConfirmTokenState,
+} from '../../../context/ConfirmTokenContext';
+import { ResetPasswordResponse } from '../../../apis/ResetPassword';
+import { AxiosError } from 'axios';
+import { AxiosErrorResponseData } from '../../../utils/CustomAxios';
+import { useToastDispatch } from '../../../context/ToastContext';
+import { useNavigate } from 'react-router-dom';
+import { useResetPasswordStepDispatch } from '../../../context/ResetPasswordStepContext';
+import { useIssueTokenDispatch } from '../../../context/IssueTokenContext';
+import { useRemainAuthMillisecondDispatch } from '../../../context/RemainAuthMillisecondContext';
 
 const PASSWORD_NOT_MATCH_TEXT = '비밀번호가 일치하지 않습니다';
 
 function ResetPasswordForm() {
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
+
+    const verifiedEmailState = useVerifiedEmailState();
+    const confirmTokenState = useConfirmTokenState();
+
+    const toastDispatch = useToastDispatch();
+    const resetPasswordStepDispatch = useResetPasswordStepDispatch();
+    const verifiedEmailDispatch = useVerifiedEmailDispatch();
+    const issueTokenDispatch = useIssueTokenDispatch();
+    const remainAuthMillisecondDispatch = useRemainAuthMillisecondDispatch();
+    const confirmTokenDispatch = useConfirmTokenDispatch();
+
+    const navigate = useNavigate();
+    const { isLoading, mutate } = useResetPasswordMutation(
+        {
+            email: verifiedEmailState,
+            confirmToken: confirmTokenState,
+            newPassword,
+            newPasswordConfirm,
+        },
+        {
+            onSuccess,
+            onError,
+        }
+    );
+
+    function resetStates() {
+        resetPasswordStepDispatch(0);
+        verifiedEmailDispatch('');
+        issueTokenDispatch('');
+        remainAuthMillisecondDispatch(0);
+        confirmTokenDispatch('');
+    }
+
+    function onSuccess(data: ResetPasswordResponse) {
+        toastDispatch({
+            type: 'OPEN',
+            severity: 'success',
+            message: '비밀번호가 변경되었어요!',
+        });
+        resetStates();
+        navigate('/login');
+    }
+
+    function onError(error: AxiosError<AxiosErrorResponseData>) {
+        const message = error.response
+            ? error.response.data.error.message
+            : '알 수 없는 에러가 발생하였습니다!!!';
+
+        toastDispatch({
+            type: 'OPEN',
+            severity: 'error',
+            message,
+        });
+    }
 
     function updateNewPasswordState(e: React.ChangeEvent<HTMLInputElement>) {
         setNewPassword(e.target.value);
@@ -17,8 +88,17 @@ function ResetPasswordForm() {
         setNewPasswordConfirm(e.target.value);
     }
 
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        mutate();
+    }
+
+    function goBackToFirstStep(e: React.MouseEvent<HTMLButtonElement>) {
+        resetStates();
+    }
+
     return (
-        <Box component="form">
+        <Box component="form" onSubmit={handleSubmit}>
             <TextField
                 margin="normal"
                 fullWidth
@@ -61,7 +141,12 @@ function ResetPasswordForm() {
                     gap: 1,
                 }}
             >
-                <Button fullWidth size="large" variant="outlined">
+                <Button
+                    fullWidth
+                    size="large"
+                    variant="outlined"
+                    onClick={goBackToFirstStep}
+                >
                     처음으로
                 </Button>
                 <Button
@@ -69,12 +154,17 @@ function ResetPasswordForm() {
                     disabled={
                         newPassword === '' ||
                         newPasswordConfirm === '' ||
-                        newPassword !== newPasswordConfirm
+                        newPassword !== newPasswordConfirm ||
+                        isLoading
                     }
                     variant="contained"
                     type="submit"
                 >
-                    비밀번호 변경하기
+                    {isLoading ? (
+                        <CircularProgress size={20} />
+                    ) : (
+                        '비밀번호 변경하기'
+                    )}
                 </Button>
             </Box>
         </Box>

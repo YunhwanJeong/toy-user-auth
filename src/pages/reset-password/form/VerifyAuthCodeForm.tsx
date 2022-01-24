@@ -20,10 +20,12 @@ import { useConfirmTokenDispatch } from '../../../context/ConfirmTokenContext';
 
 function VerifyAuthCodeForm() {
     const [authCode, setAuthCode] = useState('');
-    const resetPasswordStepDispatch = useResetPasswordStepDispatch();
+
     const verifiedEmailState = useVerifiedEmailState();
-    const verifiedEmailDispatch = useVerifiedEmailDispatch();
     const issueTokenState = useIssueTokenState();
+
+    const resetPasswordStepDispatch = useResetPasswordStepDispatch();
+    const verifiedEmailDispatch = useVerifiedEmailDispatch();
     const issueTokenDispatch = useIssueTokenDispatch();
     const remainAuthMillisecondDispatch = useRemainAuthMillisecondDispatch();
     const toastDispatch = useToastDispatch();
