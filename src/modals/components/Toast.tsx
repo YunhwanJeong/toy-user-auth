@@ -8,7 +8,7 @@ function Toast() {
     const { isOpen, severity, message } = useToastState();
     const dispatch = useToastDispatch();
 
-    function handleClose(event: React.SyntheticEvent | Event, reason: string) {
+    function handleClose(e: React.SyntheticEvent | Event, reason: string) {
         dispatch({ type: 'CLOSE' });
     }
 

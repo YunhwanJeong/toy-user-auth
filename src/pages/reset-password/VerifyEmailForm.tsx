@@ -1,13 +1,41 @@
 import React, { useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 import EmailInput from '../../components/Inputs/EmailInput';
 import { isValidEmailFormat } from '../../utils/StringUtils';
+import useVerifyEmailQuery from '../../hooks/queries/UseVerifyEmailQuery';
+import { VerifyEmailResponse } from '../../apis/ResetPassword';
+import { AxiosError } from 'axios';
+import { AxiosErrorResponseData } from '../../utils/CustomAxios';
+import { useToastDispatch } from '../../context/ToastContext';
 
 function VerifyEmailForm() {
     const [emailState, setEmailState] = useState('');
+    const toastDispatch = useToastDispatch();
+    const { isLoading, refetch } = useVerifyEmailQuery(emailState, {
+        enabled: false,
+        onSuccess,
+        onError,
+    });
+
+    function onSuccess(data: VerifyEmailResponse) {}
+
+    function onError(error: AxiosError<AxiosErrorResponseData>) {
+        if (error.response) {
+            toastDispatch({
+                type: 'OPEN',
+                severity: 'error',
+                message: error.response.data.error.message,
+            });
+        }
+    }
+
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        refetch();
+    }
 
     return (
-        <Box component="form" sx={{ mt: 10 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 10 }}>
             <EmailInput emailState={emailState} setEmailState={setEmailState} />
             <Box
                 sx={{
@@ -23,11 +51,14 @@ function VerifyEmailForm() {
                 <Button
                     fullWidth
                     disabled={
-                        emailState === '' || !isValidEmailFormat(emailState)
+                        emailState === '' ||
+                        !isValidEmailFormat(emailState) ||
+                        isLoading
                     }
                     variant="contained"
+                    type="submit"
                 >
-                    다음
+                    {isLoading ? <CircularProgress size={20} /> : '다음'}
                 </Button>
             </Box>
         </Box>
