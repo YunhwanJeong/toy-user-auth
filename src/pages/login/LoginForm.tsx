@@ -49,10 +49,6 @@ function LoginForm() {
         refetch();
     }
 
-    function isUserEmailInputInvalid() {
-        return !(emailState === '') && !isValidEmailFormat(emailState);
-    }
-
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <EmailInput emailState={emailState} setEmailState={setEmailState} />
@@ -74,7 +70,7 @@ function LoginForm() {
                 disabled={
                     emailState === '' ||
                     passwordState === '' ||
-                    isUserEmailInputInvalid() ||
+                    !isValidEmailFormat(emailState) ||
                     isLoading
                 }
                 sx={{ mt: 3 }}
