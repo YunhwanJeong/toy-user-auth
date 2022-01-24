@@ -1,10 +1,10 @@
 import React from 'react';
-import { useInterval } from '../../../hooks/UseInterval';
+import { useInterval } from '../../../../hooks/UseInterval';
 import {
     useRemainAuthMillisecondDispatch,
     useRemainAuthMillisecondState,
-} from '../../../context/reset-password/form/RemainAuthMillisecondContext';
-import { useToastDispatch } from '../../../context/global/ToastContext';
+} from '../../../../context/reset-password/form/RemainAuthMillisecondContext';
+import { useToastDispatch } from '../../../../context/global/ToastContext';
 import { InputAdornment } from '@mui/material';
 import moment from 'moment';
 

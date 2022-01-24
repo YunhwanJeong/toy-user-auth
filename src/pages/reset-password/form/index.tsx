@@ -1,7 +1,7 @@
 import React from 'react';
 import { useResetPasswordStepState } from '../../../context/reset-password/ResetPasswordStepContext';
 import VerifyEmailForm from './VerifyEmailForm';
-import VerifyAuthCodeForm from './VerifyAuthCodeForm';
+import VerifyAuthCodeForm from './authcode/VerifyAuthCodeForm';
 import ResetPasswordForm from './ResetPasswordForm';
 import IssueTokenContextProvider from '../../../context/reset-password/form/IssueTokenContext';
 import RemainAuthMillisecondContextProvider from '../../../context/reset-password/form/RemainAuthMillisecondContext';
