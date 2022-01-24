@@ -7,35 +7,31 @@ import {
     Skeleton,
     Typography,
 } from '@mui/material';
-import { useQuery } from 'react-query';
 import { grey } from '@mui/material/colors';
 import { useLoginDispatch, useLoginState } from '../../context/LoginContext';
-import { User } from '../../apis';
-import { GetUserResponse } from '../../apis/User';
 import { AxiosError } from 'axios';
 import { AxiosErrorResponseData } from '../../utils/CustomAxios';
 import { useToastDispatch } from '../../context/ToastContext';
+import useGetUserQuery from '../../hooks/queries/UseGetUserQuery';
 
 function UserInformationCard() {
     const accessToken = useLoginState();
     const loginDispatch = useLoginDispatch();
     const toastDispatch = useToastDispatch();
-    const { isLoading, data } = useQuery<
-        GetUserResponse,
-        AxiosError,
-        GetUserResponse
-    >('getUser', () => User.getUser(accessToken), {
-        onError: (error: AxiosError<AxiosErrorResponseData>) => {
-            if (error.response) {
-                toastDispatch({
-                    type: 'OPEN',
-                    severity: 'error',
-                    message: error.response.data.error.message,
-                });
-                loginDispatch(null);
-            }
-        },
+    const { isLoading, data } = useGetUserQuery(accessToken, {
+        onError,
     });
+
+    function onError(error: AxiosError<AxiosErrorResponseData>) {
+        if (error.response) {
+            toastDispatch({
+                type: 'OPEN',
+                severity: 'error',
+                message: error.response.data.error.message,
+            });
+            loginDispatch(null);
+        }
+    }
 
     return (
         <Card
