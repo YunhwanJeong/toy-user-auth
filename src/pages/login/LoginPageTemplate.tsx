@@ -9,7 +9,7 @@ function LoginPageTemplate({ children }: { children: React.ReactNode }) {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    marginTop: 8,
+                    mt: 10,
                 }}
             >
                 <Typography
